@@ -1,6 +1,6 @@
-package com.senacor.codecamp.reactive.katas.codecamp.rxjava2.solution;
+package com.senacor.codecamp.reactive.katas.codecamp.rxjava3.solution;
 
-import com.senacor.codecamp.reactive.katas.codecamp.rxjava2.solution.Kata7aResilience.ErrorWithRetryCount;
+import com.senacor.codecamp.reactive.katas.codecamp.rxjava3.solution.Kata7aResilience.ErrorWithRetryCount;
 import com.senacor.codecamp.reactive.services.WikiService;
 import com.senacor.codecamp.reactive.util.DelayFunction;
 import com.senacor.codecamp.reactive.util.FlakinessFunction;

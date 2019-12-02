@@ -1,4 +1,4 @@
-package com.senacor.codecamp.reactive.katas.codecamp.rxjava2.solution;
+package com.senacor.codecamp.reactive.katas.codecamp.rxjava3.solution;
 
 import com.senacor.codecamp.reactive.services.CountService;
 import com.senacor.codecamp.reactive.services.RatingService;
@@ -61,7 +61,7 @@ public class Kata3Combining {
 
         final String wikiArticle = "Bilbilis";
         ConnectableObservable<ParsedPage> parsedPageObservable = wikiService.fetchArticleObservable(wikiArticle)
-                // a scheduler is necessary for some reason now in RxJava 2 to get the
+                // a scheduler is necessary for some reason now in RxJava 2+ to get the
                 // ConnectableObservable working as expected
                 .subscribeOn(Schedulers.io())
                 .flatMap(wikiService::parseMediaWikiTextObservable).publish();

@@ -25,7 +25,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!--RxJava 2-->
+        <!--RxJava 3-->
         <dependency>
             <groupId>io.reactivex.rxjava3</groupId>
             <artifactId>rxjava</artifactId>

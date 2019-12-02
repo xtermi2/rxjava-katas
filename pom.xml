@@ -63,7 +63,7 @@
                 <artifactId>netty-resolver-dns</artifactId>
                 <version>${netty.version}</version>
             </dependency>
-            <!--RxJava 2-->
+            <!--RxJava 3-->
             <dependency>
                 <groupId>io.reactivex.rxjava3</groupId>
                 <artifactId>rxjava</artifactId>
@@ -176,7 +176,7 @@
     </dependencyManagement>
 
     <dependencies>
-        <!--RxJava 2-->
+        <!--RxJava 3-->
         <dependency>
             <groupId>io.reactivex.rxjava3</groupId>
             <artifactId>rxjava</artifactId>

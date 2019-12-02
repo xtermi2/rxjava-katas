@@ -1,4 +1,4 @@
-package com.senacor.codecamp.reactive.katas.codecamp.rxjava2;
+package com.senacor.codecamp.reactive.katas.codecamp.rxjava3;
 
 import com.senacor.codecamp.reactive.util.WaitMonitor;
 import io.reactivex.rxjava3.core.Observable;

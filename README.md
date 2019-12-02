@@ -2,11 +2,11 @@ Building this Project
 =====================
 
 ### requirements ###
-- maven 3
+- JDK 8 or later
 
 ### build ###
 
-`mvn clean install`
+`./mvnw clean install`
 
 ##### Troubleshooting
 - if you have troubles with failing Unittests, e.g. you are working offline 

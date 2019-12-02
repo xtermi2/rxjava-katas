@@ -1,5 +1,5 @@
 /**
- * This Package contains exercises, so called "Kata's" for RxJava 2 and Reactor.
+ * This Package contains exercises, so called "Kata's" for Reactor.
  * <p>
  * In some Katas a {@link com.senacor.codecamp.reactive.util.WaitMonitor} is used.
  * This test helper is needed, when you don't use the UnitTesting features from RxJava/Reactor
