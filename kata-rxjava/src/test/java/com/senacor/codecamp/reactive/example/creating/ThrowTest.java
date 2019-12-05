@@ -10,7 +10,7 @@ import org.junit.Test;
  */
 public class ThrowTest {
     @Test
-    public void testThrow() throws Exception {
+    public void testThrow() {
         Observable.<String>error(new IllegalStateException("not yet implemented"))
                 .subscribe(next -> ReactiveUtil.print("next: %s", next),
                         Throwable::printStackTrace,

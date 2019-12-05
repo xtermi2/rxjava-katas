@@ -11,7 +11,7 @@ import org.junit.Test;
 public class NeverTest {
 
     @Test
-    public void testNever() throws Exception {
+    public void testNever() {
         Observable.<String>never()
                 .subscribe(next -> ReactiveUtil.print("next: %s", next),
                         Throwable::printStackTrace,

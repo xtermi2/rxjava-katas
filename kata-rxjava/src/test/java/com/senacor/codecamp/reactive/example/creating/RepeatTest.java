@@ -27,7 +27,7 @@ public class RepeatTest {
     }
 
     @Test
-    public void testRepeatWithCount() throws Exception {
+    public void testRepeatWithCount() {
         Observable.just("foo", "bar", "foobar")
                 .repeat(2)
                 .subscribe(next -> print("next: %s", next),

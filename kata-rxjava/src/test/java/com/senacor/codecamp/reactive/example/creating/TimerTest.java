@@ -15,7 +15,7 @@ import static com.senacor.codecamp.reactive.util.ReactiveUtil.print;
  */
 public class TimerTest {
     @Test
-    public void testTimer() throws Exception {
+    public void testTimer() {
         final WaitMonitor monitor = new WaitMonitor();
         System.out.println(getThreadId() + "start...");
         Observable.timer(2, TimeUnit.SECONDS)

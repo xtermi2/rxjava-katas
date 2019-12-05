@@ -11,7 +11,7 @@ import org.junit.Test;
 public class JustTest {
 
     @Test
-    public void testJust() throws Exception {
+    public void testJust() {
         Observable.just("first")
                 .subscribe(next -> ReactiveUtil.print("next: %s", next),
                         Throwable::printStackTrace,
@@ -24,7 +24,7 @@ public class JustTest {
     }
 
     @Test
-    public void testJustWithFunctionCall() throws Exception {
+    public void testJustWithFunctionCall() {
         Observable<String> obs = Observable.just(getValue());
 
         ReactiveUtil.print("Observable created");

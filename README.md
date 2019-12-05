@@ -42,6 +42,8 @@ Observable is the non-backpressure Version and only Flowable supports backpressu
 - Schedulers (<https://github.com/ReactiveX/RxJava/wiki/What's-different-in-2.0#schedulers>):
 `test()` is no longer available in the `Schedulers` Class, use `new TestScheduler()`
 - `toBlocking` -> `blocking...`
+- `.unsubscribe()` -> `.dispose()`
+
 
 ##### new features
 - Maybe (<https://github.com/ReactiveX/RxJava/wiki/What's-different-in-2.0#maybe>): 

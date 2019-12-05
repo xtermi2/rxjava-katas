@@ -10,7 +10,7 @@ import org.junit.Test;
  */
 public class RangeTest {
     @Test
-    public void testRange() throws Exception {
+    public void testRange() {
         Observable.range(4, 6)
                 .subscribe(next -> ReactiveUtil.print("next: %s", next),
                         Throwable::printStackTrace,
