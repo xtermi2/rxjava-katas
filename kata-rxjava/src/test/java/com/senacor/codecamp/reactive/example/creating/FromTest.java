@@ -2,6 +2,8 @@ package com.senacor.codecamp.reactive.example.creating;
 
 import com.google.common.util.concurrent.Futures;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.internal.observers.LambdaObserver;
+import io.reactivex.rxjava3.observers.TestObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.junit.Test;
 
@@ -121,12 +123,21 @@ public class FromTest {
             }
         };
 
-        Observable.fromFuture(future, Schedulers.io())
-                .subscribe(next -> print("next: %s", next),
-                        Throwable::printStackTrace,
-                        () -> print("complete!"));
-        print("sleeping 1000ms...");
-        Thread.sleep(1000);
-        queue.put("with scheduler");
+        TestObserver<String> testSubscriber = TestObserver.create(new LambdaObserver<>(
+                next -> print("next: %s", next),
+                Throwable::printStackTrace,
+                () -> print("complete!"),
+                subscription -> print("subscribed!")));
+
+        Observable.fromFuture(future)
+                .subscribeOn(Schedulers.io())
+                .subscribe(testSubscriber);
+        testSubscriber.assertNotComplete()
+                .assertEmpty();
+        String value = "with scheduler";
+        queue.put(value);
+        testSubscriber.awaitDone(1, TimeUnit.SECONDS)
+                .assertResult(value)
+                .assertComplete();
     }
 }

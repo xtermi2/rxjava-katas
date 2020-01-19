@@ -13,7 +13,6 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static java.util.stream.Collectors.joining;
 
 /**
  * An example which shows the difficulties of debugging reactive streams.
@@ -54,9 +53,9 @@ public class DebugWithReactorTest {
     private Mono<String> queryTeamReport(String teamName) {
         return queryTeam(teamName).collectList()
                 .flatMap(team -> queryProductValues(teamName, team.size(), 100)
-                        .reduce((a, b) -> a + b)
+                        .reduce(Integer::sum)
                         .map(sum -> "The team members:\n" +
-                                team.stream().collect(joining(", ")) +
+                                String.join(", ", team) +
                                 "\nproduced per member:\n" + sum + '\n')
                 ).single();
     }
