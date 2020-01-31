@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
+import java.time.Duration;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +50,7 @@ public class StatisticsController {
                                              @RequestParam(required = false, defaultValue = "5") int numberOfTopArticles) {
         return articleReadEventsService.readEvents()
                 .doOnNext(StatisticsController::updateReadStatistic)
-                .sampleMillis(updateInterval)
+                .sample(Duration.ofMillis(updateInterval))
                 .map(readEvent -> createTopArticleList(numberOfTopArticles))
                 .retry(throwable -> {
                     logger.warn("error on topArticle, retrying", throwable);
@@ -61,14 +62,14 @@ public class StatisticsController {
     @GetMapping(value = "/statistics/article", produces = TEXT_EVENT_STREAM_VALUE)
     public Flux<ArticleStatistics> fetchArticleStatistics(@RequestParam(required = false, defaultValue = "1000") int updateInterval) {
         return articleReadEventsService.readEvents()
-                .onBackpressureDrop(articleReadEvent -> logger.warn("dropping articleReadEvent: " + articleReadEvent))
-                .bufferMillis(updateInterval / 3)
+                .onBackpressureDrop(articleReadEvent -> logger.warn("dropping articleReadEvent: {}", articleReadEvent))
+                .buffer(Duration.ofMillis(updateInterval / 3))
                 .filter(articleReadEvents -> !articleReadEvents.isEmpty())
                 .flatMap(articleReadEvent -> {
                     Flux<ArticleName> distinctArticleNames = Flux.fromIterable(articleReadEvent)
-                                                                 .map(ArticleReadEvent::toArticleName)
-                                                                 .distinct()
-                                                                 .cache();
+                            .map(ArticleReadEvent::toArticleName)
+                            .distinct()
+                            .cache();
                     Flux<Map<String, Integer>> rating = articleMetricsService.fetchRatings(distinctArticleNames)
                             .collectMap(Rating::getArticleName, Rating::getRating)
                             .cache()
@@ -82,13 +83,13 @@ public class StatisticsController {
                                     zip.getT3().get(zip.getT1().getArticleName()),
                                     zip.getT1().getFetchTimeInMillis()));
                 })
-                .bufferMillis(updateInterval)
+                .buffer(Duration.ofMillis(updateInterval))
                 .map(StatisticsController::calculateArticleStatistics)
                 .retry(throwable -> {
                     logger.warn("error on fetchArticleStatistics, retrying", throwable);
                     return true;
                 })
-                .onBackpressureDrop(articleStatistics -> logger.warn("dropping articleStatistics: " + articleStatistics))
+                .onBackpressureDrop(articleStatistics -> logger.warn("dropping articleStatistics: {}", articleStatistics))
                 .log();
     }
 

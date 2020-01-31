@@ -1,13 +1,14 @@
 package com.senacor.codecamp.reactive.services.wikiloader;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.github.davidmoten.guavamini.Lists;
 import com.senacor.codecamp.reactive.services.wikiloader.model.Article;
 import com.senacor.codecamp.reactive.services.wikiloader.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static java.util.Collections.singletonList;
 
 /**
  * @author Andreas Keefer
@@ -44,6 +45,6 @@ public class WikiController {
     @JsonView(Article.NameOnly.class)
     public List<Article> getReadStream() {
         // DUMMY
-        return Lists.newArrayList(Article.newBuilder().withName("42").build());
+        return singletonList(Article.newBuilder().withName("42").build());
     }
 }

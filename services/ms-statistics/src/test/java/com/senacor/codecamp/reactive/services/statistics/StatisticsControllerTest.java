@@ -6,15 +6,18 @@ import com.senacor.codecamp.reactive.services.statistics.external.ArticleReadEve
 import com.senacor.codecamp.reactive.services.statistics.model.*;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.FluxExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.MediaType.TEXT_EVENT_STREAM;
 
 /**
  * @author Andri Bremm
@@ -22,6 +25,7 @@ import static org.springframework.http.MediaType.TEXT_EVENT_STREAM;
 public class StatisticsControllerTest {
 
     private static final String ARTICLE_BASE_URL = "${services.article.base-url}";
+    private static final MediaType TEXT_EVENT_STREAM_UTF8 = new MediaType("text", "event-stream", StandardCharsets.UTF_8);
 
     private ArticleReadEventsService articleReadEventsServiceMock;
     private ArticleMetricsService articleMetricsServiceMock;
@@ -30,7 +34,7 @@ public class StatisticsControllerTest {
     private WebTestClient testClient;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.articleReadEventsServiceMock = mock(ArticleReadEventsService.class);
         this.articleMetricsServiceMock = mock(ArticleMetricsService.class);
         this.statisticsController = new StatisticsController(articleReadEventsServiceMock, articleMetricsServiceMock);
@@ -39,12 +43,14 @@ public class StatisticsControllerTest {
 
     @Test
     public void fetchArticleStatisticsWithDefaultUpdateInterval() {
-        when(articleReadEventsServiceMock.readEvents()).thenReturn(Flux.intervalMillis(100).take(6).map(count -> createReadEvent(count, 100))
-                .doOnNext(next -> System.out.println("readEvent: " + next)));
+        when(articleReadEventsServiceMock.readEvents())
+                .thenReturn(Flux.interval(Duration.ofMillis(100)).take(6).map(count -> createReadEvent(count, 100))
+                        .doOnNext(next -> System.out.println("readEvent: " + next)));
         when(articleMetricsServiceMock.fetchRatings(any())).thenAnswer(invocation -> {
             Flux<ArticleName> names = invocation.getArgument(0);
-            System.out.println("fetchRatings: " + names.collectList().block());
-            return names.map(name -> new Rating(name.getName(), Integer.parseInt(name.getName())));
+            return names
+                    .doOnNext(name -> System.out.println("fetchRating: " + name))
+                    .map(name -> new Rating(name.getName(), Integer.parseInt(name.getName())));
         });
         when(articleMetricsServiceMock.fetchWordCounts(any())).thenAnswer(invocation -> {
             Flux<ArticleName> names = invocation.getArgument(0);
@@ -52,11 +58,10 @@ public class StatisticsControllerTest {
         });
 
         FluxExchangeResult<ArticleStatistics> result = testClient.get().uri(uB -> uB.pathSegment("statistics", "article").queryParam("updateInterval", 1000).build())
-                                                                 .exchange()
-                                                                 .expectStatus().isOk()
-                                                                 .expectHeader().contentType(TEXT_EVENT_STREAM)
-                                                                 .expectBody(ArticleStatistics.class)
-                                                                 .returnResult();
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(TEXT_EVENT_STREAM_UTF8)
+                .returnResult(ArticleStatistics.class);
 
         StepVerifier.create(result.getResponseBody()
                 .doOnNext(articleStatistics -> System.out.println("received on clientside: " + articleStatistics)))
@@ -67,12 +72,13 @@ public class StatisticsControllerTest {
 
     @Test
     public void fetchArticleStatisticsWithShortUpdateInterval() {
-        when(articleReadEventsServiceMock.readEvents()).thenReturn(Flux.intervalMillis(310).take(4)
+        when(articleReadEventsServiceMock.readEvents()).thenReturn(Flux.interval(Duration.ofMillis(310)).take(4)
                 .map(count -> createReadEvent(count, count.intValue())));
         when(articleMetricsServiceMock.fetchRatings(any())).thenAnswer(invocation -> {
             Flux<ArticleName> names = invocation.getArgument(0);
-            System.out.println("fetchRatings: " + names.collectList().block());
-            return names.map(name -> new Rating(name.getName(), Integer.parseInt(name.getName())));
+            return names
+                    .doOnNext(name -> System.out.println("fetchRating: " + name))
+                    .map(name -> new Rating(name.getName(), Integer.parseInt(name.getName())));
         });
         when(articleMetricsServiceMock.fetchWordCounts(any())).thenAnswer(invocation -> {
             Flux<ArticleName> names = invocation.getArgument(0);
@@ -94,20 +100,19 @@ public class StatisticsControllerTest {
 
     @Test
     public void fetchTopArticleWithDefaultQueryParams() {
-        when(articleReadEventsServiceMock.readEvents()).thenReturn(Flux.intervalMillis(245).take(5)
+        when(articleReadEventsServiceMock.readEvents()).thenReturn(Flux.interval(Duration.ofMillis(245)).take(5)
                 .flatMap(count -> Flux.just(createReadEvent(count, count.intValue())).repeat(count * 2)));
 
         FluxExchangeResult<TopArticle[]> result = testClient.get().uri("/top/article")
-                                                            .exchange()
-                                                            .expectStatus().isOk()
-                                                            .expectHeader().contentType(TEXT_EVENT_STREAM)
-                                                            .expectBody(TopArticle[].class)
-                                                            .returnResult();
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(TEXT_EVENT_STREAM_UTF8)
+                .returnResult(TopArticle[].class);
 
         StepVerifier.create(result.getResponseBody().flatMap(Flux::fromArray))
-                .expectNext(createTopArticle("3", 6))
-                .expectNext(createTopArticle("2", 4))
-                .expectNext(createTopArticle("1", 2))
+                .expectNext(createTopArticle("3", 7))
+                .expectNext(createTopArticle("2", 5))
+                .expectNext(createTopArticle("1", 3))
                 .thenCancel()
                 .verify();
     }

@@ -3,8 +3,8 @@ package com.senacor.codecamp.reactive.services.wikiloader;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -25,7 +25,7 @@ public class WikiControllerIntegrationTest {
     private WebClient client;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         String baseUrl = "http://localhost:" + this.port;
         this.testClient = WebTestClient.bindToServer()
                 .baseUrl(baseUrl)
@@ -34,12 +34,12 @@ public class WikiControllerIntegrationTest {
     }
 
     @Test
-    public void fetchArticle() throws Exception {
-
+    public void fetchArticle() {
+        // TODO
     }
 
     @Test
-    public void getReadStream() throws Exception {
-
+    public void getReadStream() {
+        // TODO
     }
 }

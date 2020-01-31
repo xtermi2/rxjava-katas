@@ -26,10 +26,9 @@ public class WikiLoaderServiceImpl implements WikiLoaderService {
     @Override
     public Mono<Article> fetchArticle(String articleName) {
         return articleClient.get()
-                               .uri(ARTICLE_ENDPOINT + urlEncode(articleName))
-                               .exchange()
-                               .doOnNext(WrongStatusException.okFilter())
-                               .flatMap(r -> r.bodyToFlux(Article.class))
-                               .single();
+                .uri(ARTICLE_ENDPOINT + urlEncode(articleName))
+                .exchange()
+                .doOnNext(WrongStatusException.okFilter())
+                .flatMap(r -> r.bodyToMono(Article.class));
     }
 }
