@@ -95,7 +95,7 @@
             <dependency>
                 <groupId>com.bitplan</groupId>
                 <artifactId>mediawiki-japi</artifactId>
-                <version>0.1.03</version>
+                <version>0.1.05</version>
             </dependency>
             <!-- Media Wiki Parser -->
             <dependency>
