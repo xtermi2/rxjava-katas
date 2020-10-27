@@ -24,7 +24,7 @@
                 <groupId>io.projectreactor</groupId>
                 <artifactId>reactor-bom</artifactId>
                 <!-- since Dysprosium-SR10 Kata7aResilience.timeout fails -->
-                <version>Dysprosium-SR9</version>
+                <version>Dysprosium-SR13</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
