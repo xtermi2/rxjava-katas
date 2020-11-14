@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
+import reactor.util.retry.Retry;
 
 import java.time.Duration;
 import java.util.Comparator;
@@ -52,10 +53,11 @@ public class StatisticsController {
                 .doOnNext(StatisticsController::updateReadStatistic)
                 .sample(Duration.ofMillis(updateInterval))
                 .map(readEvent -> createTopArticleList(numberOfTopArticles))
-                .retry(throwable -> {
-                    logger.warn("error on topArticle, retrying", throwable);
-                    return true;
-                })
+                .retryWhen(Retry.withThrowable(throwableFlux ->
+                        throwableFlux.map(throwable -> {
+                            logger.warn("error on topArticle, retrying", throwable);
+                            return true;
+                        })))
                 .log();
     }
 
@@ -85,10 +87,11 @@ public class StatisticsController {
                 })
                 .buffer(Duration.ofMillis(updateInterval))
                 .map(StatisticsController::calculateArticleStatistics)
-                .retry(throwable -> {
-                    logger.warn("error on fetchArticleStatistics, retrying", throwable);
-                    return true;
-                })
+                .retryWhen(Retry.withThrowable(throwableFlux ->
+                        throwableFlux.map(throwable -> {
+                            logger.warn("error on fetchArticleStatistics, retrying", throwable);
+                            return true;
+                        })))
                 .onBackpressureDrop(articleStatistics -> logger.warn("dropping articleStatistics: {}", articleStatistics))
                 .log();
     }
