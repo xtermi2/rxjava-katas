@@ -107,13 +107,13 @@ public class WikiService {
      * @return fetches a wiki article as a media wiki formatted string
      */
     public Flux<String> fetchArticleFlux(final String wikiArticle) {
-        return Flux.just(wikiArticle)
-                .map(this::fetchArticle)
-                .doOnNext(record(wikiArticle));
+        return Flux.from(fetchArticleFlowable(wikiArticle));
     }
 
     public Flowable<String> fetchArticleFlowable(final String wikiArticle) {
-        return Flowable.fromPublisher(fetchArticleFlux(wikiArticle));
+        return Flowable.just(wikiArticle)
+                .map(this::fetchArticle)
+                .doOnNext(fetchedArticle -> record(wikiArticle).accept(fetchedArticle));
     }
 
     /**
