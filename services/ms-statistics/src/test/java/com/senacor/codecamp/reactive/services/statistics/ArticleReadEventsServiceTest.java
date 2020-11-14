@@ -2,8 +2,8 @@ package com.senacor.codecamp.reactive.services.statistics;
 
 import com.senacor.codecamp.reactive.services.statistics.external.ArticleReadEvent;
 import com.senacor.codecamp.reactive.services.statistics.external.ArticleReadEventsService;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -22,13 +22,13 @@ import static org.mockito.Mockito.when;
 /**
  * @author Andri Bremm
  */
-public class ArticleReadEventsServiceTest {
+class ArticleReadEventsServiceTest {
 
     private ArticleReadEventsService articleReadEventsService;
 
     private RequestHeadersSpec headerSpec;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         headerSpec = mock(RequestHeadersSpec.class, Mockito.RETURNS_SELF);
         RequestHeadersUriSpec uriSpec = mock(RequestHeadersUriSpec.class, invocation -> headerSpec);
@@ -38,7 +38,7 @@ public class ArticleReadEventsServiceTest {
     }
 
     @Test
-    public void fetchReadEvents() {
+    void fetchReadEvents() {
         Flux<ArticleReadEvent[]> flux = Flux.interval(Duration.ofMillis(30)).take(3)
                 .map(count -> asList(createReadEvent()).toArray(new ArticleReadEvent[]{}));
         ClientResponse clientResponse = mock(ClientResponse.class);
