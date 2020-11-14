@@ -4,8 +4,8 @@ import com.senacor.codecamp.reactive.services.statistics.external.ArticleMetrics
 import com.senacor.codecamp.reactive.services.statistics.external.ArticleReadEvent;
 import com.senacor.codecamp.reactive.services.statistics.external.ArticleReadEventsService;
 import com.senacor.codecamp.reactive.services.statistics.model.*;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.FluxExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author Andri Bremm
  */
-public class StatisticsControllerTest {
+class StatisticsControllerTest {
 
     private static final String ARTICLE_BASE_URL = "${services.article.base-url}";
     private static final MediaType TEXT_EVENT_STREAM_UTF8 = new MediaType("text", "event-stream", StandardCharsets.UTF_8);
@@ -33,7 +33,7 @@ public class StatisticsControllerTest {
     private StatisticsController statisticsController;
     private WebTestClient testClient;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.articleReadEventsServiceMock = mock(ArticleReadEventsService.class);
         this.articleMetricsServiceMock = mock(ArticleMetricsService.class);
@@ -42,7 +42,7 @@ public class StatisticsControllerTest {
     }
 
     @Test
-    public void fetchArticleStatisticsWithDefaultUpdateInterval() {
+    void fetchArticleStatisticsWithDefaultUpdateInterval() {
         when(articleReadEventsServiceMock.readEvents())
                 .thenReturn(Flux.interval(Duration.ofMillis(100)).take(6).map(count -> createReadEvent(count, 100))
                         .doOnNext(next -> System.out.println("readEvent: " + next)));
@@ -71,7 +71,7 @@ public class StatisticsControllerTest {
     }
 
     @Test
-    public void fetchArticleStatisticsWithShortUpdateInterval() {
+    void fetchArticleStatisticsWithShortUpdateInterval() {
         when(articleReadEventsServiceMock.readEvents()).thenReturn(Flux.interval(Duration.ofMillis(310)).take(4)
                 .map(count -> createReadEvent(count, count.intValue())));
         when(articleMetricsServiceMock.fetchRatings(any())).thenAnswer(invocation -> {
@@ -99,7 +99,7 @@ public class StatisticsControllerTest {
     }
 
     @Test
-    public void fetchTopArticleWithDefaultQueryParams() {
+    void fetchTopArticleWithDefaultQueryParams() {
         when(articleReadEventsServiceMock.readEvents()).thenReturn(Flux.interval(Duration.ofMillis(245)).take(5)
                 .flatMap(count -> Flux.just(createReadEvent(count, count.intValue())).repeat(count * 2)));
 
