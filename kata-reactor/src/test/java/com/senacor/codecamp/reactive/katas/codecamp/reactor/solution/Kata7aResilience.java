@@ -9,6 +9,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
+import reactor.util.retry.Retry;
 
 import java.io.UncheckedIOException;
 import java.time.Duration;
@@ -53,7 +54,7 @@ public class Kata7aResilience {
         WikiService wikiService = WikiService.create(DelayFunction.staticDelay(100));
 
         StepVerifier.create(fetchArticleFluxWithTimeout(wikiService, "42")
-                .retryWhen(retryWithDelay(2)))
+                .retryWhen(Retry.withThrowable(retryWithDelay(2))))
                 .expectNextMatches(value -> value.startsWith("{{Dieser Artikel|behandelt das Jahr 42"))
                 .verifyComplete();
     }
@@ -63,7 +64,7 @@ public class Kata7aResilience {
         WikiService wikiService = WikiService.create(DelayFunction.staticDelay(1),
                 FlakinessFunction.alwaysFail());
         StepVerifier.create(fetchArticleFluxWithTimeout(wikiService, "42")
-                .retryWhen(retryWithDelay(2)))
+                .retryWhen(Retry.withThrowable(retryWithDelay(2))))
                 .expectError(UncheckedIOException.class)
                 .verify();
     }
@@ -73,7 +74,7 @@ public class Kata7aResilience {
         WikiService wikiService = WikiService.create(DelayFunction.staticDelay(1),
                 FlakinessFunction.failCountDown(2));
         StepVerifier.create(fetchArticleFluxWithTimeout(wikiService, "42")
-                .retryWhen(retryWithDelay(2)))
+                .retryWhen(Retry.withThrowable(retryWithDelay(2))))
                 .expectNextMatches(value -> value.startsWith("{{Dieser Artikel|behandelt das Jahr 42"))
                 .verifyComplete();
     }
@@ -118,15 +119,15 @@ public class Kata7aResilience {
         Flux<String> timeout = fetchArticleFluxWithTimeout(WikiService.create(
                 DelayFunction.staticDelay(600)), "42")
                 .subscribeOn(Schedulers.elastic())
-                .retryWhen(retryWithDelay(3));
+                .retryWhen(Retry.withThrowable(retryWithDelay(3)));
         Flux<String> error = fetchArticleFluxWithTimeout(WikiService.create(
                 DelayFunction.staticDelay(10), FlakinessFunction.alwaysFail()), "42")
                 .subscribeOn(Schedulers.elastic())
-                .retryWhen(retryWithDelay(3));
+                .retryWhen(Retry.withThrowable(retryWithDelay(3)));
         Flux<String> ok = fetchArticleFluxWithTimeout(WikiService.create(
                 DelayFunction.staticDelay(400)), "42")
                 .subscribeOn(Schedulers.elastic())
-                .retryWhen(retryWithDelay(3));
+                .retryWhen(Retry.withThrowable(retryWithDelay(3)));
 
         StepVerifier.create(Flux.first(Arrays.asList(timeout, error, ok))
                 .subscribeOn(Schedulers.elastic()))
