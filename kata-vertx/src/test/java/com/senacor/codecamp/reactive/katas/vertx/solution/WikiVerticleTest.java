@@ -66,7 +66,7 @@ public class WikiVerticleTest extends VertxTestBase {
                 assertThat(parsedPage, notNullValue());
                 vertx.eventBus().<Integer>send("countWords", parsedPage, resCount -> {
                     assertThat(resCount.result().body(),
-                            allOf(greaterThanOrEqualTo(200), lessThanOrEqualTo(210)));
+                            allOf(greaterThanOrEqualTo(200), lessThanOrEqualTo(230)));
                     testComplete();
                 });
             });

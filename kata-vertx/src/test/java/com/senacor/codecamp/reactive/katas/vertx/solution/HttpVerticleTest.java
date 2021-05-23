@@ -23,8 +23,8 @@ public class HttpVerticleTest extends VertxTestBase {
             assertEquals(200, response.statusCode());
             assertEquals("text/plain", response.headers().get("content-type"));
             response.bodyHandler(body -> {
-                assertTrue(body.toString().contains("count=20"));
-                assertTrue(body.toString().contains(" rate=5"));
+                assertTrue(body.toString(), body.toString().contains("count=219"));
+                assertTrue(body.toString(), body.toString().contains(" rate=5"));
                 complete();
             });
         });

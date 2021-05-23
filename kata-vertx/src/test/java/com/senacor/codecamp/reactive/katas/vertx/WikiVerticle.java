@@ -1,18 +1,20 @@
 package com.senacor.codecamp.reactive.katas.vertx;
 
 import com.senacor.codecamp.reactive.services.WikiService;
+import com.senacor.codecamp.reactive.util.DelayFunction;
+import com.senacor.codecamp.reactive.util.FlakinessFunction;
 import io.vertx.core.AbstractVerticle;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
 
 /**
  * @author Andreas Keefer
  */
 public class WikiVerticle extends AbstractVerticle {
 
-    private static final Logger log = LoggerFactory.getLogger(WikiVerticle.class);
-
-    private final WikiService wikiService = WikiService.create();
+    private final WikiService wikiService = WikiService.create(
+            DelayFunction.withNoDelay(),
+            FlakinessFunction.noFlakiness(),
+            false,
+            "de");
 
     @Override
     public void start() throws Exception {
