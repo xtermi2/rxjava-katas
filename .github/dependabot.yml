@@ -1,65 +1,17 @@
 version: 2
 updates:
-- package-ecosystem: maven
-  directory: "/"
-  schedule:
-    interval: daily
-    time: "04:00"
-    timezone: Europe/Berlin
-  open-pull-requests-limit: 20
-  assignees:
-  - xtermi2
-  ignore:
-  - dependency-name: de.ruedigermoeller:fst
-    versions:
-    - ">= 3.a, < 4"
-  - dependency-name: io.netty:netty-all
-    versions:
-    - 4.1.61.Final
-    - 4.1.62.Final
-  - dependency-name: io.netty:netty-resolver-dns
-    versions:
-    - 4.1.61.Final
-    - 4.1.62.Final
-  - dependency-name: io.netty:netty-codec-http2
-    versions:
-    - 4.1.61.Final
-    - 4.1.62.Final
-  - dependency-name: io.netty:netty-codec-http
-    versions:
-    - 4.1.61.Final
-    - 4.1.62.Final
-  - dependency-name: io.netty:netty-handler-proxy
-    versions:
-    - 4.1.61.Final
-    - 4.1.62.Final
-  - dependency-name: io.netty:netty-handler
-    versions:
-    - 4.1.61.Final
-    - 4.1.62.Final
-  - dependency-name: io.netty:netty-transport
-    versions:
-    - 4.1.61.Final
-    - 4.1.62.Final
-  - dependency-name: io.netty:netty-common
-    versions:
-    - 4.1.61.Final
-    - 4.1.62.Final
-  - dependency-name: io.vertx:vertx-reactive-streams
-    versions:
-    - 4.0.0
-    - 4.0.1
-    - 4.0.2
-    - 4.0.3
-  - dependency-name: io.vertx:vertx-core:tests
-    versions:
-    - 4.0.0
-    - 4.0.1
-    - 4.0.2
-    - 4.0.3
-  - dependency-name: io.vertx:vertx-core
-    versions:
-    - 4.0.0
-    - 4.0.1
-    - 4.0.2
-    - 4.0.3
+  - package-ecosystem: maven
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "04:00"
+      timezone: Europe/Berlin
+    open-pull-requests-limit: 20
+    assignees:
+      - xtermi2
+    ignore:
+      - dependency-name: de.ruedigermoeller:fst
+        versions:
+          - ">= 3.a, < 4"
+      - dependency-name: io.vertx:*
+        update-types: [ "version-update:semver-major" ]
