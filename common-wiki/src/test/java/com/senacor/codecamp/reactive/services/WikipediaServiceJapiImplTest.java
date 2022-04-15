@@ -3,10 +3,10 @@ package com.senacor.codecamp.reactive.services;
 import com.senacor.codecamp.reactive.services.integration.WikipediaServiceJapi;
 import com.senacor.codecamp.reactive.services.integration.WikipediaServiceJapiImpl;
 import com.senacor.codecamp.reactive.util.ReactiveUtil;
-import org.junit.Assert;
 import org.junit.Test;
 import reactor.test.StepVerifier;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 public class WikipediaServiceJapiImplTest {
@@ -14,15 +14,12 @@ public class WikipediaServiceJapiImplTest {
     private final WikipediaServiceJapi wikipediaService = new WikipediaServiceJapiImpl();
 
     private final String ARTICLE_NAME = "Eigenwert";
-    private final String ARTICLE_CONTENT = "#WEITERLEITUNG [[Eigenwertproblem]]\n" +
-            "{{Wikidata-Weiterleitung|Q21406831}}\n" +
-            "\n" +
-            "[[Kategorie:Lineare Algebra]]";
+    private final String ARTICLE_CONTENT = "#WEITERLEITUNG [[Eigenwertproblem]]\n{{Wikidata-Weiterleitung|Q3553768}}\n\n[[Kategorie:Lineare Algebra]]";
 
     @Test
     public void getArticle() {
         String article = wikipediaService.getArticle(ARTICLE_NAME);
-        Assert.assertThat(article, is(ARTICLE_CONTENT));
+        assertThat(article, is(ARTICLE_CONTENT));
     }
 
     @Test
