@@ -13,8 +13,8 @@ import reactor.core.scheduler.Schedulers;
 import java.util.concurrent.TimeUnit;
 
 import static com.senacor.codecamp.reactive.util.ReactiveUtil.print;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 /**
  * @author Andreas Keefer
