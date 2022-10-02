@@ -33,7 +33,7 @@ import static io.reactivex.rxjava3.core.BackpressureStrategy.BUFFER;
 public class WikiService {
 
     private final MediaWikiTextParser parser = new MediaWikiTextParser();
-    private static final boolean MOCKMODE = false;
+    private static final boolean MOCKMODE = true;
     private static final boolean RECORD = false;
 
     /**
