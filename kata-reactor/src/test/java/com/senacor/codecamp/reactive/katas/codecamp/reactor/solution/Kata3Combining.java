@@ -32,7 +32,7 @@ public class Kata3Combining {
      * Example {"articleName": "Superman", "rating": 3, "wordCount": 452}
      */
     @Test
-    public void combining() throws Exception {
+    public void combining() {
         WaitMonitor waitMonitor = new WaitMonitor();
 
         final String wikiArticle = "Bilbilis";
@@ -51,12 +51,12 @@ public class Kata3Combining {
                         Throwable::printStackTrace,
                         waitMonitor::complete);
 
-        waitMonitor.waitFor(10, TimeUnit.SECONDS);
+        waitMonitor.waitFor(15L, TimeUnit.SECONDS);
         assertThat(waitMonitor.isComplete(), is(true));
     }
 
     @Test
-    public void combiningPublish() throws Exception {
+    public void combiningPublish() {
         WaitMonitor waitMonitor = new WaitMonitor();
 
         final String wikiArticle = "Bilbilis";
@@ -76,7 +76,7 @@ public class Kata3Combining {
                         Throwable::printStackTrace,
                         () -> waitMonitor.complete());
 
-        waitMonitor.waitFor(10, TimeUnit.SECONDS);
+        waitMonitor.waitFor(15L, TimeUnit.SECONDS);
         assertThat(waitMonitor.isComplete(), is(true));
     }
 }
