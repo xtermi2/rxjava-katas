@@ -61,7 +61,7 @@ public class Kata3Combining {
 
         final String wikiArticle = "Bilbilis";
         ConnectableFlux<ParsedPage> connectableFlux = wikiService.fetchArticleFlux(wikiArticle)
-                .subscribeOn(Schedulers.elastic())
+                .subscribeOn(Schedulers.boundedElastic())
                 .flatMap(wikiService::parseMediaWikiTextFlux)
                 .publish();
 
