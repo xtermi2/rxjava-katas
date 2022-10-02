@@ -16,7 +16,7 @@
 
         <vertx.version>3.9.13</vertx.version>
         <netty.version>4.1.76.Final</netty.version>
-        <netty-codec-http2.version>4.1.76.Final</netty-codec-http2.version>
+        <netty-codec-http2.version>4.1.82.Final</netty-codec-http2.version>
     </properties>
 
     <dependencyManagement>
