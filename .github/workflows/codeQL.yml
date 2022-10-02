@@ -1,4 +1,4 @@
-name: Java CI
+name: CodeQL
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
     - cron: '31 16 * * 1'
 
 jobs:
-  build:
+  codeql:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
