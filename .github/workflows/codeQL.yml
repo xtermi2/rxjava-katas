@@ -1,6 +1,10 @@
 name: Java CI
 
 on:
+  push:
+    branches:
+      - main
+      - master
   schedule:
     - cron: '31 16 * * 1'
 
