@@ -18,3 +18,10 @@ jobs:
           java-version: 17
       - name: Build with Maven
         run: ./mvnw -B clean install
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: JUnit Tests
+          path: '**/target/*-reports/TEST-*.xml'
+          reporter: java-junit

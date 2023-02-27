@@ -15,3 +15,7 @@ updates:
           - ">= 3.a, < 4"
       - dependency-name: io.vertx:*
         update-types: [ "version-update:semver-major" ]
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: daily

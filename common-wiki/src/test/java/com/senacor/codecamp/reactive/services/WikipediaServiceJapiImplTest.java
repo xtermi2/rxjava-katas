@@ -14,7 +14,10 @@ public class WikipediaServiceJapiImplTest {
     private final WikipediaServiceJapi wikipediaService = new WikipediaServiceJapiImpl();
 
     private final String ARTICLE_NAME = "Eigenwert";
-    private final String ARTICLE_CONTENT = "#WEITERLEITUNG [[Eigenwertproblem]]\n{{Wikidata-Weiterleitung|Q3553768}}\n\n[[Kategorie:Lineare Algebra]]";
+    private final String ARTICLE_CONTENT = "#WEITERLEITUNG [[Eigenwerte und Eigenvektoren]]\n" +
+            "{{Wikidata-Weiterleitung|Q3553768}}\n" +
+            "\n" +
+            "[[Kategorie:Lineare Algebra]]";
 
     @Test
     public void getArticle() {
