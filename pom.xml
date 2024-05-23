@@ -15,7 +15,7 @@
         <java.version>1.8</java.version>
 
         <vertx.version>3.9.16</vertx.version>
-        <netty.version>4.1.108.Final</netty.version>
+        <netty.version>4.1.110.Final</netty.version>
         <netty-codec-http2.version>4.1.110.Final</netty-codec-http2.version>
     </properties>
 
